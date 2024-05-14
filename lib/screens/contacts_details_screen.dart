@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/models/contact.dart';
+import 'package:flutter_contacts/providers/contacts_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ContactDetailsScreen extends StatelessWidget {
-  final Contact contact;
-  const ContactDetailsScreen(this.contact, {super.key});
+class ContactDetailsScreen extends ConsumerWidget {
+  final String contactId;
+  const ContactDetailsScreen(this.contactId, {super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final contact = ref.watch(selectedContactsProvider(contactId));
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.star_outline))
+          IconButton(
+              onPressed: () {
+                ref.read(contactsProvider.notifier).toggleFavorite(contact.id);
+              },
+              icon: Icon(
+                contact.isFavorite ? Icons.star : Icons.star_outline,
+                color: contact.isFavorite ? Colors.yellow : null,
+              ))
         ],
       ),
       body: Column(

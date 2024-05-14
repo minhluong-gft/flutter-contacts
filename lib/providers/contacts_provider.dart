@@ -30,8 +30,28 @@ class ContactsNotifier extends Notifier<List<Contact>> {
 
     state = List.of(state)..insert(index, contact);
   }
+
+  void toggleFavorite(String id) {
+    state = [
+      for (final contact in state)
+        if (contact.id == id)
+          contact.copyWith(isFavoriteParameter: !contact.isFavorite)
+        else
+          contact
+    ];
+  }
 }
 
 final contactsProvider = NotifierProvider<ContactsNotifier, List<Contact>>(
   () => ContactsNotifier(contactsList),
 );
+
+final filterFavoriteContactsProvider = Provider<List<Contact>>((ref) {
+  final data = ref.watch(contactsProvider);
+  return data.where((element) => element.isFavorite).toList();
+});
+
+final selectedContactsProvider = Provider.family<Contact, String>((ref, id) {
+  final contacts = ref.watch(contactsProvider);
+  return contacts.firstWhere((element) => element.id == id);
+});

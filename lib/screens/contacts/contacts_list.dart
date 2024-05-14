@@ -42,12 +42,17 @@ class ContactsList extends ConsumerWidget {
             motion: const ScrollMotion(),
             children: [
               SlidableAction(
-                onPressed: (ctx) {},
-                foregroundColor:
-                    Theme.of(context).colorScheme.onTertiaryContainer,
+                onPressed: (ctx) {
+                  ref
+                      .read(contactsProvider.notifier)
+                      .toggleFavorite(contact.id);
+                },
+                foregroundColor: contact.isFavorite
+                    ? Colors.yellow
+                    : Theme.of(context).colorScheme.onTertiaryContainer,
                 backgroundColor:
                     Theme.of(context).colorScheme.tertiaryContainer,
-                icon: Icons.star_outline,
+                icon: contact.isFavorite ? Icons.star : Icons.star_outline,
               ),
               SlidableAction(
                 autoClose: false,
@@ -69,7 +74,7 @@ class ContactsList extends ConsumerWidget {
           child: ListTile(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => ContactDetailsScreen(contact),
+                builder: (ctx) => ContactDetailsScreen(contact.id),
               ));
             },
             leading: contact.avatar != null
