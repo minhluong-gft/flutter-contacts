@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/providers/contacts_provider.dart';
@@ -31,9 +32,17 @@ class ContactsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Contacts')),
-      body: contacts.isEmpty
-          ? const Center(child: Text('No contacts'))
-          : ContactsList(contacts: contacts),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const FavoriteContactList(),
+            Expanded(
+              child: contacts.isEmpty
+                  ? const Center(child: Text('No contacts'))
+                  : ContactsList(contacts: contacts),
+            ),
+          ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _handleAddContact(context, ref),
         child: const Icon(Icons.add),

@@ -17,11 +17,11 @@ class _NewContactFormState extends State<NewContactForm> {
     if (_formKey.currentState!.saveAndValidate()) {
       final formValues = _formKey.currentState!.value;
       final newContract = Contact(
-        id: DateTime.now().toString(),
-        avatar: null,
-        fullName: formValues['fullName'] as String,
-        email: formValues['email'] as String,
-      );
+          id: DateTime.now().toString(),
+          avatar: null,
+          fullName: formValues['fullName'] as String,
+          email: formValues['email'] as String,
+          isFavorite: false);
 
       Navigator.of(context).pop(newContract);
     }
