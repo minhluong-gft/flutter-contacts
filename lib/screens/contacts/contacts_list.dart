@@ -77,7 +77,7 @@ class ContactsList extends ConsumerWidget {
                 builder: (ctx) => ContactDetailsScreen(contact.id),
               ));
             },
-            leading: contact.avatar != null
+            leading: contact.avatar != null && contact.avatar!.isNotEmpty
                 ? CircleAvatar(backgroundImage: NetworkImage(contact.avatar!))
                 : const CircleAvatar(
                     foregroundImage:

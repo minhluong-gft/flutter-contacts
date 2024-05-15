@@ -1,30 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/providers/contacts_data_provider.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:flutter_contacts/models/contact.dart';
 
-class NewContactForm extends StatefulWidget {
+class NewContactForm extends ConsumerStatefulWidget {
   const NewContactForm({super.key});
 
   @override
-  State<NewContactForm> createState() => _NewContactFormState();
+  ConsumerState<NewContactForm> createState() => _NewContactFormState();
 }
 
-class _NewContactFormState extends State<NewContactForm> {
+class _NewContactFormState extends ConsumerState<NewContactForm> {
   final _formKey = GlobalKey<FormBuilderState>();
+  bool isSubmiting = false;
+  String? createContactError;
 
-  void _handleSubmit() {
-    if (_formKey.currentState!.saveAndValidate()) {
-      final formValues = _formKey.currentState!.value;
-      final newContract = Contact(
-          id: DateTime.now().toString(),
-          avatar: null,
-          fullName: formValues['fullName'] as String,
-          email: formValues['email'] as String,
-          isFavorite: false);
-
-      Navigator.of(context).pop(newContract);
+  void _handleSubmit() async {
+    if (!_formKey.currentState!.saveAndValidate()) {
+      return;
     }
+    final formValues = _formKey.currentState!.value;
+    final addContact = ref.read(contactsDataProvider.notifier).addContact;
+    setState(() {
+      isSubmiting = true;
+    });
+    addContact(
+      fullName: formValues['fullName'],
+      email: formValues['email'],
+      avatar: formValues['avatar'],
+    ).then(
+      (value) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('New contact has been added')));
+          Navigator.of(context).pop();
+        }
+      },
+    ).catchError((error) {
+      setState(() {
+        createContactError = error.toString();
+        isSubmiting = false;
+      });
+    });
   }
 
   @override
@@ -72,18 +91,26 @@ class _NewContactFormState extends State<NewContactForm> {
                     FormBuilderValidators.email(),
                   ]),
                 ),
+                if (createContactError != null) Text(createContactError!),
                 const Spacer(flex: 1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     OutlinedButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: isSubmiting
+                          ? null
+                          : () => Navigator.of(context).pop(),
                       child: const Text('Cancel'),
                     ),
                     const SizedBox(width: 16),
                     FilledButton(
-                      onPressed: _handleSubmit,
-                      child: const Text('Add Contact'),
+                      onPressed: isSubmiting ? null : _handleSubmit,
+                      child: isSubmiting
+                          ? const SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator())
+                          : const Text('Add Contact'),
                     ),
                   ],
                 )

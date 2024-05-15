@@ -3,6 +3,7 @@ import 'package:flutter_contacts/providers/theme_provider.dart';
 import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
 import 'package:flutter_contacts/generated/proto/index.pbgrpc.dart' as proto;
 import 'package:flutter_contacts/services/contacts_service.dart';
+import 'package:flutter_contacts/providers/contacts_data_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/providers/contacts_provider.dart';
@@ -11,16 +12,6 @@ import 'package:flutter_contacts/widgets/new_contact_form.dart';
 
 class ContactsScreen extends ConsumerWidget {
   const ContactsScreen({super.key});
-
-  void _testLoadContacts() async {
-    try {
-      final response =
-          await ContactsService.instance.client.getContacts(proto.Void());
-      print(response.contacts);
-    } catch (e) {
-      print(e);
-    }
-  }
 
   void _handleAddContact(BuildContext context, WidgetRef ref) async {
     final Contact? newContact = await showModalBottomSheet(
@@ -41,25 +32,26 @@ class ContactsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final contacts = ref.watch(contactsProvider);
     final isLightTheme = ref.watch(themProvider);
+    final contactsFuture = ref.watch(contactsDataProvider);
+
+    final Widget body;
+
+    if (contactsFuture.isLoading) {
+      body = _buildLoadingState();
+    } else if (contactsFuture.hasError) {
+      body = _buildError(contactsFuture.error.toString(), context);
+    } else if (contactsFuture.valueOrNull == null) {
+      body = _buildEmptyState();
+    } else {
+      body = _buildList(contactsFuture.value!);
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Contacts')),
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const FavoriteContactList(),
-            Expanded(
-              child: contacts.isEmpty
-                  ? const Center(child: Text('No contacts'))
-                  : ContactsList(contacts: contacts),
-            ),
-          ]),
+      body: body,
       floatingActionButton: FloatingActionButton(
-        // onPressed: () => _handleAddContact(context, ref),
-        onPressed: _testLoadContacts,
+        onPressed: () => _handleAddContact(context, ref),
         child: const Icon(Icons.add),
       ),
       drawer: Drawer(
@@ -82,6 +74,37 @@ class ContactsScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildError(String error, BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('Failed to load contacts'),
+          Text(error, style: Theme.of(context).textTheme.bodySmall),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return const Center(child: Text('No contacts'));
+  }
+
+  Widget _buildList(List<Contact> contacts) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(child: ContactsList(contacts: contacts)),
+      ],
     );
   }
 }
