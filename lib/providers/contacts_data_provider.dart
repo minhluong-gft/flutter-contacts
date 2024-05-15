@@ -3,13 +3,6 @@ import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 
-// final contactsDataProvider = FutureProvider.autoDispose((ref) async {
-//   final response =
-//       await ContactsService.instance.client.getContacts(proto.Void());
-//   final contacts = response.contacts.map(Contact.fromProtoContact).toList();
-//   return contacts;
-// });
-
 final contactsDataProvider =
     AsyncNotifierProvider.autoDispose<ContactsDataNotifier, List<Contact>>(
         ContactsDataNotifier.new);
@@ -34,6 +27,15 @@ class ContactsDataNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
     final previousState = await future;
 
     state = AsyncData([...previousState, newContact]);
+  }
+
+  Future<void> deleteContact(String contactId) async {
+    final client = ContactsService.instance.client;
+    await client.deleteContact(proto.Id(id: contactId));
+
+    final previousState = await future;
+    state = AsyncData(
+        previousState.where((element) => element.id != contactId).toList());
   }
 
   @override

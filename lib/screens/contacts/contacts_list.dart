@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/providers/contacts_data_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/providers/contacts_provider.dart';
@@ -13,18 +14,19 @@ class ContactsList extends ConsumerWidget {
 
   final List<Contact> contacts;
 
-  void _deleteContact(Contact contact, WidgetRef ref, BuildContext context) {
-    final undoDelete =
-        ref.read(contactsProvider.notifier).removeContact(contact);
+  void _deleteContact(
+      Contact contact, WidgetRef ref, BuildContext context) async {
+    await ref.read(contactsDataProvider.notifier).deleteContact(contact.id);
 
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 6),
-        content: Text("Deleted ${contact.fullName}"),
-        action: SnackBarAction(label: 'Undo', onPressed: undoDelete),
-      ),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 6),
+          content: Text("Deleted ${contact.fullName}"),
+        ),
+      );
+    }
   }
 
   @override
