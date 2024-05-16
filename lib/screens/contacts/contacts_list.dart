@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/providers/contacts_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
-import 'package:flutter_contacts/providers/contacts_provider.dart';
 import 'package:flutter_contacts/screens/contacts_details_screen.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -13,18 +13,26 @@ class ContactsList extends ConsumerWidget {
 
   final List<Contact> contacts;
 
-  void _deleteContact(Contact contact, WidgetRef ref, BuildContext context) {
-    final undoDelete =
-        ref.read(contactsProvider.notifier).removeContact(contact);
+  void _deleteContact(
+      Contact contact, WidgetRef ref, BuildContext context) async {
+    await ref.read(contactsProvider.notifier).deleteContact(contact.id);
 
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 6),
-        content: Text("Deleted ${contact.fullName}"),
-        action: SnackBarAction(label: 'Undo', onPressed: undoDelete),
-      ),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 6),
+          content: Text("Deleted ${contact.fullName}"),
+        ),
+      );
+    }
+  }
+
+  void _toggleFavorite(Contact contact, WidgetRef ref) {
+    final newIsFavorite = !contact.isFavorite;
+    ref
+        .read(contactsProvider.notifier)
+        .setContactFavorite(contact.id, newIsFavorite);
   }
 
   @override
@@ -43,12 +51,10 @@ class ContactsList extends ConsumerWidget {
             children: [
               SlidableAction(
                 onPressed: (ctx) {
-                  ref
-                      .read(contactsProvider.notifier)
-                      .toggleFavorite(contact.id);
+                  _toggleFavorite(contact, ref);
                 },
                 foregroundColor: contact.isFavorite
-                    ? Colors.yellow
+                    ? Colors.orange
                     : Theme.of(context).colorScheme.onTertiaryContainer,
                 backgroundColor:
                     Theme.of(context).colorScheme.tertiaryContainer,
@@ -77,7 +83,7 @@ class ContactsList extends ConsumerWidget {
                 builder: (ctx) => ContactDetailsScreen(contact.id),
               ));
             },
-            leading: contact.avatar != null
+            leading: contact.avatar != null && contact.avatar!.isNotEmpty
                 ? CircleAvatar(backgroundImage: NetworkImage(contact.avatar!))
                 : const CircleAvatar(
                     foregroundImage:

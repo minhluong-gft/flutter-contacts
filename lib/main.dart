@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/providers/theme_provider.dart';
+import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/screens/contacts/contacts_screen.dart';
 import 'package:flutter_contacts/themes.dart';
 
 void main() {
+  ContactsService().init();
   runApp(const ProviderScope(child: MainApp()));
 }
 
