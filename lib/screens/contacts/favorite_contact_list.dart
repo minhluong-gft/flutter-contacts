@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/screens/contacts_details_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 
@@ -30,12 +31,19 @@ class FavoriteContactList extends ConsumerWidget {
                 itemCount: favoriteContacts.length,
                 itemBuilder: (ctx, index) {
                   final contact = favoriteContacts[index];
-                  return CircleAvatar(
-                    radius: 30,
-                    backgroundImage: contact.avatar != null
-                        ? NetworkImage(contact.avatar!)
-                        : const AssetImage('assets/images/default_avatar.jpg')
-                            as ImageProvider,
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => ContactDetailsScreen(contact.id),
+                      ));
+                    },
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: contact.avatar != null
+                          ? NetworkImage(contact.avatar!)
+                          : const AssetImage('assets/images/default_avatar.jpg')
+                              as ImageProvider,
+                    ),
                   );
                 }),
           ),

@@ -54,7 +54,7 @@ class ContactsList extends ConsumerWidget {
                   _toggleFavorite(contact, ref);
                 },
                 foregroundColor: contact.isFavorite
-                    ? Colors.yellow
+                    ? Colors.orange
                     : Theme.of(context).colorScheme.onTertiaryContainer,
                 backgroundColor:
                     Theme.of(context).colorScheme.tertiaryContainer,
