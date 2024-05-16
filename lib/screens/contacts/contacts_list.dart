@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/screens/contacts_details_screen.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 
 class ContactsList extends ConsumerWidget {
   const ContactsList({
@@ -79,9 +80,8 @@ class ContactsList extends ConsumerWidget {
           ),
           child: ListTile(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => ContactDetailsScreen(contact.id),
-              ));
+              context.pushNamed('contactDetails',
+                  pathParameters: {'contactId': contact.id});
             },
             leading: contact.avatar != null && contact.avatar!.isNotEmpty
                 ? CircleAvatar(backgroundImage: NetworkImage(contact.avatar!))

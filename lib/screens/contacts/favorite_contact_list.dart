@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/screens/contacts_details_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
+import 'package:go_router/go_router.dart';
 
 class FavoriteContactList extends ConsumerWidget {
   const FavoriteContactList(this.favoriteContacts, {super.key});
@@ -26,7 +26,7 @@ class FavoriteContactList extends ConsumerWidget {
           SizedBox(
             height: 70,
             child: ListView.separated(
-                separatorBuilder: (BuildContext context, int index) =>
+                separatorBuilder: (BuildContext ctx, int index) =>
                     const SizedBox(width: 16),
                 scrollDirection: Axis.horizontal,
                 itemCount: favoriteContacts.length,
@@ -34,9 +34,8 @@ class FavoriteContactList extends ConsumerWidget {
                   final contact = favoriteContacts[index];
                   return InkWell(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => ContactDetailsScreen(contact.id),
-                      ));
+                      context.pushNamed('contactDetails',
+                          pathParameters: {'contactId': contact.id});
                     },
                     child: CircleAvatar(
                       radius: 30,
