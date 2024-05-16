@@ -34,18 +34,18 @@ class ContactsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final isLightTheme = ref.watch(themProvider);
-    final contactsFuture = ref.watch(contactsDataProvider);
+    final contactsAsyncValue = ref.watch(contactsDataProvider);
 
     final Widget body;
 
-    if (contactsFuture.isLoading) {
+    if (contactsAsyncValue.isLoading) {
       body = _buildLoadingState();
-    } else if (contactsFuture.hasError) {
-      body = _buildError(contactsFuture.error.toString(), context);
-    } else if (contactsFuture.valueOrNull == null) {
+    } else if (contactsAsyncValue.hasError) {
+      body = _buildError(contactsAsyncValue.error.toString(), context);
+    } else if (contactsAsyncValue.valueOrNull == null) {
       body = _buildEmptyState(context);
     } else {
-      body = _buildList(contactsFuture.value!, ref);
+      body = _buildList(contactsAsyncValue.value!, ref);
     }
 
     return Scaffold(

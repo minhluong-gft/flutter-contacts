@@ -1,4 +1,5 @@
 import 'package:flutter_contacts/generated/proto/index.pb.dart' as proto;
+import 'package:flutter_contacts/providers/contact_provider.dart';
 import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
@@ -50,6 +51,8 @@ class ContactsDataNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
       }
       return element.copyWith(isFavoriteParameter: isFavorite);
     }).toList());
+
+    ref.invalidate(contactProvider(contactId));
   }
 
   @override
