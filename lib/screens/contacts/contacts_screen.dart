@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/providers/theme_provider.dart';
 import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
@@ -29,6 +30,7 @@ class ContactsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final contacts = ref.watch(contactsProvider);
+    final isLightTheme = ref.watch(themProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Contacts')),
@@ -46,6 +48,26 @@ class ContactsScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _handleAddContact(context, ref),
         child: const Icon(Icons.add),
+      ),
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SwitchListTile(
+                  title: const Text("Light Mode"),
+                  value: isLightTheme,
+                  onChanged: (value) {
+                    ref.read(themProvider.notifier).state = value;
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
