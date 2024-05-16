@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/providers/theme_provider.dart';
 import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
-import 'package:flutter_contacts/generated/proto/index.pbgrpc.dart' as proto;
-import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_contacts/providers/contacts_data_provider.dart';
-import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
-import 'package:flutter_contacts/providers/contacts_provider.dart';
 import 'package:flutter_contacts/screens/contacts/contacts_list.dart';
 import 'package:flutter_contacts/widgets/new_contact_form.dart';
 
@@ -15,7 +11,7 @@ class ContactsScreen extends ConsumerWidget {
   const ContactsScreen({super.key});
 
   void _handleAddContact(BuildContext context, WidgetRef ref) async {
-    final Contact? newContact = await showModalBottomSheet(
+    showModalBottomSheet(
       isDismissible: false,
       isScrollControlled: true,
       context: context,
@@ -25,10 +21,6 @@ class ContactsScreen extends ConsumerWidget {
         child: const NewContactForm(),
       ),
     );
-
-    if (newContact != null) {
-      ref.read(contactsProvider.notifier).addContact(newContact);
-    }
   }
 
   @override
