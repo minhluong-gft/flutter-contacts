@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/providers/contact_provider.dart';
-import 'package:flutter_contacts/providers/contacts_data_provider.dart';
+import 'package:flutter_contacts/providers/contacts_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ContactDetailsScreen extends ConsumerWidget {
@@ -11,7 +11,7 @@ class ContactDetailsScreen extends ConsumerWidget {
   void _toggleFavorite(Contact contact, WidgetRef ref) {
     final newIsFavorite = !contact.isFavorite;
     ref
-        .read(contactsDataProvider.notifier)
+        .read(contactsProvider.notifier)
         .setContactFavorite(contact.id, newIsFavorite);
   }
 
@@ -34,18 +34,19 @@ class ContactDetailsScreen extends ConsumerWidget {
     if (contact == null) {
       return AppBar();
     }
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDark ? Colors.yellow : Colors.orange;
     return AppBar(
       actions: [
         IconButton(
-            onPressed: () {
-              _toggleFavorite(contact, ref);
-            },
-            icon: Icon(
-              contact.isFavorite ? Icons.star : Icons.star_outline,
-              color: contact.isFavorite
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : null,
-            ))
+          onPressed: () {
+            _toggleFavorite(contact, ref);
+          },
+          icon: Icon(
+            contact.isFavorite ? Icons.star : Icons.star_outline,
+            color: contact.isFavorite ? iconColor : null,
+          ),
+        )
       ],
     );
   }

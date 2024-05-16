@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/providers/contacts_data_provider.dart';
+import 'package:flutter_contacts/providers/contacts_provider.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -21,7 +21,7 @@ class _NewContactFormState extends ConsumerState<NewContactForm> {
       return;
     }
     final formValues = _formKey.currentState!.value;
-    final addContact = ref.read(contactsDataProvider.notifier).addContact;
+    final addContact = ref.read(contactsProvider.notifier).addContact;
     setState(() {
       isSubmiting = true;
     });

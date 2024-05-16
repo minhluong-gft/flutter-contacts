@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/providers/theme_provider.dart';
 import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
-import 'package:flutter_contacts/providers/contacts_data_provider.dart';
+import 'package:flutter_contacts/providers/contacts_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/screens/contacts/contacts_list.dart';
@@ -26,7 +26,7 @@ class ContactsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final isLightTheme = ref.watch(themProvider);
-    final contactsAsyncValue = ref.watch(contactsDataProvider);
+    final contactsAsyncValue = ref.watch(contactsProvider);
 
     final Widget body;
 
@@ -121,7 +121,7 @@ class ContactsScreen extends ConsumerWidget {
         ],
         Expanded(
           child: RefreshIndicator(
-            onRefresh: () => ref.refresh(contactsDataProvider.future),
+            onRefresh: () => ref.refresh(contactsProvider.future),
             child: ContactsList(contacts: contacts),
           ),
         ),
@@ -132,7 +132,7 @@ class ContactsScreen extends ConsumerWidget {
   Widget _buildRefreshIndicator(Widget child) {
     return Consumer(
       builder: (ctx, ref, widget) => RefreshIndicator(
-        onRefresh: () => ref.refresh(contactsDataProvider.future),
+        onRefresh: () => ref.refresh(contactsProvider.future),
         child: LayoutBuilder(
           builder: (context, constraints) => SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),

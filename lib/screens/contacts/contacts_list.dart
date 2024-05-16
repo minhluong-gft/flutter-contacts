@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/providers/contacts_data_provider.dart';
+import 'package:flutter_contacts/providers/contacts_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/screens/contacts_details_screen.dart';
@@ -15,7 +15,7 @@ class ContactsList extends ConsumerWidget {
 
   void _deleteContact(
       Contact contact, WidgetRef ref, BuildContext context) async {
-    await ref.read(contactsDataProvider.notifier).deleteContact(contact.id);
+    await ref.read(contactsProvider.notifier).deleteContact(contact.id);
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -31,7 +31,7 @@ class ContactsList extends ConsumerWidget {
   void _toggleFavorite(Contact contact, WidgetRef ref) {
     final newIsFavorite = !contact.isFavorite;
     ref
-        .read(contactsDataProvider.notifier)
+        .read(contactsProvider.notifier)
         .setContactFavorite(contact.id, newIsFavorite);
   }
 
