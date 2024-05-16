@@ -57,7 +57,7 @@ class ContactDetailsScreen extends ConsumerWidget {
         Stack(
           children: [
             Image(
-              image: contact.avatar != null
+              image: contact.avatar != null && contact.avatar!.isNotEmpty
                   ? NetworkImage(contact.avatar!)
                   : const AssetImage('assets/images/default_avatar.jpg')
                       as ImageProvider,

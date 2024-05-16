@@ -30,14 +30,14 @@ class ContactsScreen extends ConsumerWidget {
 
     final Widget body;
 
-    if (contactsAsyncValue.isLoading) {
-      body = _buildLoadingState();
-    } else if (contactsAsyncValue.hasError) {
-      body = _buildError(contactsAsyncValue.error.toString(), context);
-    } else if (contactsAsyncValue.valueOrNull == null) {
+    if (contactsAsyncValue.value != null && contactsAsyncValue.value!.isEmpty) {
       body = _buildEmptyState(context);
-    } else {
+    } else if (contactsAsyncValue.valueOrNull != null) {
       body = _buildList(contactsAsyncValue.value!, ref);
+    } else if (contactsAsyncValue.error != null) {
+      body = _buildError(contactsAsyncValue.error.toString(), context);
+    } else {
+      body = _buildLoadingState();
     }
 
     return Scaffold(
@@ -48,20 +48,16 @@ class ContactsScreen extends ConsumerWidget {
         child: const Icon(Icons.add),
       ),
       drawer: Drawer(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+        child: SafeArea(
           child: ListView(
-            padding: EdgeInsets.zero,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SwitchListTile(
-                  title: const Text("Light Mode"),
-                  value: isLightTheme,
-                  onChanged: (value) {
-                    ref.read(themProvider.notifier).state = value;
-                  },
-                ),
+              SwitchListTile(
+                title: const Text("Light Mode"),
+                value: isLightTheme,
+                onChanged: (value) {
+                  ref.read(themProvider.notifier).state = value;
+                },
+                contentPadding: const EdgeInsets.all(16),
               )
             ],
           ),
