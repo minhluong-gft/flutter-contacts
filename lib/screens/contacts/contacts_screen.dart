@@ -42,14 +42,16 @@ class ContactsScreen extends ConsumerWidget {
     } else if (contactsFuture.hasError) {
       body = _buildError(contactsFuture.error.toString(), context);
     } else if (contactsFuture.valueOrNull == null) {
-      body = _buildEmptyState();
+      body = _buildEmptyState(context);
     } else {
       body = _buildList(contactsFuture.value!);
     }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Contacts')),
-      body: body,
+      body: RefreshIndicator(
+          onRefresh: () => ref.refresh(contactsDataProvider.future),
+          child: body),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _handleAddContact(context, ref),
         child: const Icon(Icons.add),
@@ -82,20 +84,32 @@ class ContactsScreen extends ConsumerWidget {
   }
 
   Widget _buildError(String error, BuildContext context) {
-    return Center(
+    final theme = Theme.of(context);
+    return _buildRefreshIndicator(Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Failed to load contacts'),
-          Text(error, style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            'Failed to load contacts',
+            style: TextStyle(color: theme.colorScheme.onSurface),
+          ),
+          const SizedBox(height: 16),
+          Text(error,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall!
+                  .copyWith(color: theme.colorScheme.onSurface)),
         ],
       ),
-    );
+    ));
   }
 
-  Widget _buildEmptyState() {
-    return const Center(child: Text('No contacts'));
+  Widget _buildEmptyState(BuildContext context) {
+    return _buildRefreshIndicator(Center(
+        child: Text(
+      'No contacts',
+      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+    )));
   }
 
   Widget _buildList(List<Contact> contacts) {
@@ -105,6 +119,23 @@ class ContactsScreen extends ConsumerWidget {
       children: [
         Expanded(child: ContactsList(contacts: contacts)),
       ],
+    );
+  }
+
+  Widget _buildRefreshIndicator(Widget child) {
+    return Consumer(
+      builder: (ctx, ref, widget) => RefreshIndicator(
+        onRefresh: () => ref.refresh(contactsDataProvider.future),
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: SizedBox(
+              height: constraints.maxHeight,
+              child: child,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
