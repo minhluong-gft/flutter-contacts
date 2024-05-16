@@ -4,6 +4,7 @@ import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
 import 'package:flutter_contacts/generated/proto/index.pbgrpc.dart' as proto;
 import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_contacts/providers/contacts_data_provider.dart';
+import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/providers/contacts_provider.dart';
@@ -44,14 +45,12 @@ class ContactsScreen extends ConsumerWidget {
     } else if (contactsFuture.valueOrNull == null) {
       body = _buildEmptyState(context);
     } else {
-      body = _buildList(contactsFuture.value!);
+      body = _buildList(contactsFuture.value!, ref);
     }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Contacts')),
-      body: RefreshIndicator(
-          onRefresh: () => ref.refresh(contactsDataProvider.future),
-          child: body),
+      body: body,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _handleAddContact(context, ref),
         child: const Icon(Icons.add),
@@ -95,29 +94,45 @@ class ContactsScreen extends ConsumerWidget {
             style: TextStyle(color: theme.colorScheme.onSurface),
           ),
           const SizedBox(height: 16),
-          Text(error,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodySmall!
-                  .copyWith(color: theme.colorScheme.onSurface)),
+          Text(
+            error,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodySmall!
+                .copyWith(color: theme.colorScheme.onSurface),
+          ),
         ],
       ),
     ));
   }
 
   Widget _buildEmptyState(BuildContext context) {
-    return _buildRefreshIndicator(Center(
+    return _buildRefreshIndicator(
+      Center(
         child: Text(
-      'No contacts',
-      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-    )));
+          'No contacts',
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
+      ),
+    );
   }
 
-  Widget _buildList(List<Contact> contacts) {
+  Widget _buildList(List<Contact> contacts, WidgetRef ref) {
+    final favoriteContacts =
+        contacts.where((contact) => contact.isFavorite).toList();
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(child: ContactsList(contacts: contacts)),
+        if (favoriteContacts.isNotEmpty) ...[
+          FavoriteContactList(favoriteContacts),
+          const Divider(height: 1),
+        ],
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () => ref.refresh(contactsDataProvider.future),
+            child: ContactsList(contacts: contacts),
+          ),
+        ),
       ],
     );
   }

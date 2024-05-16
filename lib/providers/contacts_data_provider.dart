@@ -38,6 +38,20 @@ class ContactsDataNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
         previousState.where((element) => element.id != contactId).toList());
   }
 
+  Future<void> setContactFavorite(String contactId, bool isFavorite) async {
+    final client = ContactsService.instance.client;
+    await client.setContactFavorite(
+        proto.SetContactFavoriteRequest(id: contactId, isFavorite: isFavorite));
+
+    final previousState = await future;
+    state = AsyncData(previousState.map((element) {
+      if (element.id != contactId) {
+        return element;
+      }
+      return element.copyWith(isFavoriteParameter: isFavorite);
+    }).toList());
+  }
+
   @override
   Future<List<Contact>> build() async {
     final response =

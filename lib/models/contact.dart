@@ -20,7 +20,7 @@ class Contact {
         fullName = contact.fullName,
         avatar = contact.avatar,
         email = contact.email,
-        isFavorite = false;
+        isFavorite = contact.isFavorite;
 
   Contact copyWith({bool? isFavoriteParameter}) {
     return Contact(

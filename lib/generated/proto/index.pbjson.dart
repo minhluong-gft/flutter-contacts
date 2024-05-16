@@ -79,13 +79,15 @@ const Contact$json = {
     {'1': 'fullName', '3': 2, '4': 1, '5': 9, '10': 'fullName'},
     {'1': 'email', '3': 3, '4': 1, '5': 9, '10': 'email'},
     {'1': 'avatar', '3': 4, '4': 1, '5': 9, '10': 'avatar'},
+    {'1': 'isFavorite', '3': 5, '4': 1, '5': 8, '10': 'isFavorite'},
   ],
 };
 
 /// Descriptor for `Contact`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactDescriptor = $convert.base64Decode(
     'CgdDb250YWN0Eg4KAmlkGAEgASgJUgJpZBIaCghmdWxsTmFtZRgCIAEoCVIIZnVsbE5hbWUSFA'
-    'oFZW1haWwYAyABKAlSBWVtYWlsEhYKBmF2YXRhchgEIAEoCVIGYXZhdGFy');
+    'oFZW1haWwYAyABKAlSBWVtYWlsEhYKBmF2YXRhchgEIAEoCVIGYXZhdGFyEh4KCmlzRmF2b3Jp'
+    'dGUYBSABKAhSCmlzRmF2b3JpdGU=');
 
 @$core.Deprecated('Use createContactRequestDescriptor instead')
 const CreateContactRequest$json = {
@@ -101,4 +103,18 @@ const CreateContactRequest$json = {
 final $typed_data.Uint8List createContactRequestDescriptor = $convert.base64Decode(
     'ChRDcmVhdGVDb250YWN0UmVxdWVzdBIaCghmdWxsTmFtZRgCIAEoCVIIZnVsbE5hbWUSFAoFZW'
     '1haWwYAyABKAlSBWVtYWlsEhYKBmF2YXRhchgEIAEoCVIGYXZhdGFy');
+
+@$core.Deprecated('Use setContactFavoriteRequestDescriptor instead')
+const SetContactFavoriteRequest$json = {
+  '1': 'SetContactFavoriteRequest',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    {'1': 'isFavorite', '3': 2, '4': 1, '5': 8, '10': 'isFavorite'},
+  ],
+};
+
+/// Descriptor for `SetContactFavoriteRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setContactFavoriteRequestDescriptor = $convert.base64Decode(
+    'ChlTZXRDb250YWN0RmF2b3JpdGVSZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZBIeCgppc0Zhdm9yaX'
+    'RlGAIgASgIUgppc0Zhdm9yaXRl');
 

@@ -245,6 +245,7 @@ class Contact extends $pb.GeneratedMessage {
     $core.String? fullName,
     $core.String? email,
     $core.String? avatar,
+    $core.bool? isFavorite,
   }) {
     final $result = create();
     if (id != null) {
@@ -259,6 +260,9 @@ class Contact extends $pb.GeneratedMessage {
     if (avatar != null) {
       $result.avatar = avatar;
     }
+    if (isFavorite != null) {
+      $result.isFavorite = isFavorite;
+    }
     return $result;
   }
   Contact._() : super();
@@ -270,6 +274,7 @@ class Contact extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'fullName', protoName: 'fullName')
     ..aOS(3, _omitFieldNames ? '' : 'email')
     ..aOS(4, _omitFieldNames ? '' : 'avatar')
+    ..aOB(5, _omitFieldNames ? '' : 'isFavorite', protoName: 'isFavorite')
     ..hasRequiredFields = false
   ;
 
@@ -329,6 +334,15 @@ class Contact extends $pb.GeneratedMessage {
   $core.bool hasAvatar() => $_has(3);
   @$pb.TagNumber(4)
   void clearAvatar() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.bool get isFavorite => $_getBF(4);
+  @$pb.TagNumber(5)
+  set isFavorite($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasIsFavorite() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearIsFavorite() => clearField(5);
 }
 
 class CreateContactRequest extends $pb.GeneratedMessage {
@@ -407,6 +421,70 @@ class CreateContactRequest extends $pb.GeneratedMessage {
   $core.bool hasAvatar() => $_has(2);
   @$pb.TagNumber(4)
   void clearAvatar() => clearField(4);
+}
+
+class SetContactFavoriteRequest extends $pb.GeneratedMessage {
+  factory SetContactFavoriteRequest({
+    $core.String? id,
+    $core.bool? isFavorite,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (isFavorite != null) {
+      $result.isFavorite = isFavorite;
+    }
+    return $result;
+  }
+  SetContactFavoriteRequest._() : super();
+  factory SetContactFavoriteRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SetContactFavoriteRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SetContactFavoriteRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'contactsproto'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..aOB(2, _omitFieldNames ? '' : 'isFavorite', protoName: 'isFavorite')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SetContactFavoriteRequest clone() => SetContactFavoriteRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SetContactFavoriteRequest copyWith(void Function(SetContactFavoriteRequest) updates) => super.copyWith((message) => updates(message as SetContactFavoriteRequest)) as SetContactFavoriteRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SetContactFavoriteRequest create() => SetContactFavoriteRequest._();
+  SetContactFavoriteRequest createEmptyInstance() => create();
+  static $pb.PbList<SetContactFavoriteRequest> createRepeated() => $pb.PbList<SetContactFavoriteRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SetContactFavoriteRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SetContactFavoriteRequest>(create);
+  static SetContactFavoriteRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get isFavorite => $_getBF(1);
+  @$pb.TagNumber(2)
+  set isFavorite($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasIsFavorite() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearIsFavorite() => clearField(2);
 }
 
 

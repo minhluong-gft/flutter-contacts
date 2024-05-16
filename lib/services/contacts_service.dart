@@ -19,11 +19,13 @@ class ContactsService {
   }
 
   _createChannel() {
-    const host = "192.168.1.7";
+    const host = "192.168.2.24";
     final channel = ClientChannel(
       host,
       port: 50051,
-      options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
+      options: const ChannelOptions(
+          credentials: ChannelCredentials.insecure(),
+          connectTimeout: Duration(seconds: 3)),
     );
 
     _client = ContactsClient(channel);

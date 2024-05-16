@@ -29,6 +29,13 @@ class ContactsList extends ConsumerWidget {
     }
   }
 
+  void _toggleFavorite(Contact contact, WidgetRef ref) {
+    final newIsFavorite = !contact.isFavorite;
+    ref
+        .read(contactsDataProvider.notifier)
+        .setContactFavorite(contact.id, newIsFavorite);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView.separated(
@@ -45,9 +52,7 @@ class ContactsList extends ConsumerWidget {
             children: [
               SlidableAction(
                 onPressed: (ctx) {
-                  ref
-                      .read(contactsProvider.notifier)
-                      .toggleFavorite(contact.id);
+                  _toggleFavorite(contact, ref);
                 },
                 foregroundColor: contact.isFavorite
                     ? Colors.yellow
