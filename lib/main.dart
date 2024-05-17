@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/providers/language_provider.dart';
+import 'package:flutter_contacts/providers/auth_provider.dart';
+import 'package:flutter_contacts/providers/go_router_provider.dart';
 import 'package:flutter_contacts/providers/theme_provider.dart';
 import 'package:flutter_contacts/screens/contacts_details_screen.dart';
+import 'package:flutter_contacts/screens/login_screen.dart';
 import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/screens/contacts/contacts_screen.dart';
@@ -21,6 +24,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   ContactsService().init();
+
   final savedLocale = await loadSavedLocale();
 
   runApp(EasyLocalization(
@@ -39,6 +43,9 @@ class MainApp extends ConsumerWidget {
     final isLightMode = ref.watch(themeNotifierProvider);
     final locale = ref.watch(languageNotifierProvider);
 
+    final routerConfig = ref.watch(goRouterProvider);
+    ref.read(authProvider.notifier);
+
     return MaterialApp.router(
       theme: kLightTheme,
       darkTheme: kDarkTheme,
@@ -46,22 +53,7 @@ class MainApp extends ConsumerWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: locale,
-      routerConfig: _router,
+      routerConfig: routerConfig,
     );
   }
 }
-
-final _router = GoRouter(
-  initialLocation: '/contacts',
-  routes: [
-    GoRoute(
-        name: 'contacts',
-        path: '/contacts',
-        builder: (context, state) => const ContactsScreen()),
-    GoRoute(
-        name: 'contactDetails',
-        path: '/contacts/:contactId',
-        builder: (context, state) =>
-            ContactDetailsScreen(state.pathParameters['contactId']!)),
-  ],
-);

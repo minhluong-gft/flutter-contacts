@@ -7,7 +7,11 @@ environment:
   sdk: ">=3.3.4 <4.0.0"
 
 dependencies:
+<<<<<<< HEAD
   easy_localization: ^3.0.7
+=======
+  equatable: ^2.0.5
+>>>>>>> 49769ac (add authentication flow - step 1)
   flutter:
     sdk: flutter
   flutter_form_builder: ^9.2.1
