@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_contacts/generated/proto/index.pbgrpc.dart' as proto;
 import 'package:flutter_contacts/models/auth_state.dart';
+import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -59,8 +61,12 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
 
   Future<void> login(
       {required String username, required String password}) async {
-    await Future.delayed(const Duration(microseconds: 500));
-    state = const AuthStateAuthenticated();
+    final response = await ContactsService.instance.client
+        .login(proto.LoginRequest(username: username, password: password));
+
+    state = AuthStateAuthenticated(
+        username: username, credentials: response.credentials);
+
     _routerListener?.call();
   }
 

@@ -1,7 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 sealed class AuthState extends Equatable {
-  const AuthState();
+  final String? username;
+  final String? credentials;
+
+  const AuthState({this.username, this.credentials});
 }
 
 final class AuthStateInitial extends AuthState {
@@ -12,7 +15,7 @@ final class AuthStateInitial extends AuthState {
 }
 
 final class AuthStateAuthenticated extends AuthState {
-  const AuthStateAuthenticated();
+  const AuthStateAuthenticated({super.username, super.credentials});
 
   @override
   List<Object?> get props => [];

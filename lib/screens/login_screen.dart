@@ -23,14 +23,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final password = values['password'];
       setState(() {
         _isRequesting = true;
+        _error = null;
       });
       await ref
           .read(authProvider.notifier)
-          .login(username: username, password: password);
-
-      // setState(() {
-      //   _isRequesting = false;
-      // });
+          .login(username: username, password: password)
+          .catchError((error) {
+        setState(() {
+          _isRequesting = false;
+          _error = 'Login failed. Please check your username and password.';
+        });
+      });
     }
   }
 
@@ -52,6 +55,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 style: theme.textTheme.titleLarge!
                     .copyWith(color: theme.colorScheme.onSurface),
               ),
+              if (_error != null) ...[
+                const SizedBox(height: 20),
+                Text(
+                  _error!,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium!
+                      .copyWith(color: theme.colorScheme.error),
+                )
+              ],
               const SizedBox(height: 30),
               FormBuilderTextField(
                 name: 'username',

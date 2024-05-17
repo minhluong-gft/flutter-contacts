@@ -1,8 +1,10 @@
 import 'package:flutter_contacts/generated/proto/index.pb.dart' as proto;
+import 'package:flutter_contacts/providers/auth_provider.dart';
 import 'package:flutter_contacts/providers/contact_provider.dart';
 import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
+import 'package:grpc/grpc.dart';
 
 final contactsProvider =
     AsyncNotifierProvider.autoDispose<ContactsNotifier, List<Contact>>(
@@ -14,6 +16,7 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
     required String email,
     required String? avatar,
   }) async {
+    final credentials = ref.read(authProvider).credentials;
     final client = ContactsService.instance.client;
     final protoContact = await client.createContact(
       proto.CreateContactRequest(
@@ -21,6 +24,7 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
         email: email,
         avatar: avatar,
       ),
+      options: CallOptions(metadata: {'authorization': 'basic $credentials'}),
     );
 
     final newContact = Contact.fromProtoContact(protoContact);
@@ -31,8 +35,12 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
   }
 
   Future<void> deleteContact(String contactId) async {
+    final credentials = ref.read(authProvider).credentials;
     final client = ContactsService.instance.client;
-    await client.deleteContact(proto.Id(id: contactId));
+    await client.deleteContact(
+      proto.Id(id: contactId),
+      options: CallOptions(metadata: {'authorization': 'basic $credentials'}),
+    );
 
     final previousState = await future;
     state = AsyncData(
@@ -40,9 +48,12 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
   }
 
   Future<void> setContactFavorite(String contactId, bool isFavorite) async {
+    final credentials = ref.read(authProvider).credentials;
     final client = ContactsService.instance.client;
     await client.setContactFavorite(
-        proto.SetContactFavoriteRequest(id: contactId, isFavorite: isFavorite));
+      proto.SetContactFavoriteRequest(id: contactId, isFavorite: isFavorite),
+      options: CallOptions(metadata: {'authorization': 'basic $credentials'}),
+    );
 
     final previousState = await future;
     state = AsyncData(previousState.map((element) {
@@ -57,8 +68,11 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
 
   @override
   Future<List<Contact>> build() async {
-    final response =
-        await ContactsService.instance.client.getContacts(proto.Void());
+    final credentials = ref.read(authProvider).credentials;
+    final response = await ContactsService.instance.client.getContacts(
+      proto.Void(),
+      options: CallOptions(metadata: {'authorization': 'basic $credentials'}),
+    );
     final contacts = response.contacts.map(Contact.fromProtoContact).toList();
     return contacts;
   }
