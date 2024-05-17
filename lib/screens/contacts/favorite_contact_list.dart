@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/screens/contacts_details_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,10 +18,10 @@ class FavoriteContactList extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Favorites",
+            "favorites",
             style: theme.textTheme.titleMedium!
                 .copyWith(color: theme.colorScheme.onSurface),
-          ),
+          ).tr(),
           const SizedBox(height: 8),
           SizedBox(
             height: 70,
