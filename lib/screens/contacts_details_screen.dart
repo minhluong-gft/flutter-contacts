@@ -22,6 +22,8 @@ class ContactDetailsScreen extends ConsumerWidget {
     Widget body = _buildLoadingState();
     if (contactAsyncValue.hasValue) {
       body = _buildContent(contactAsyncValue.value!, context);
+    } else if (contactAsyncValue.error != null) {
+      body = _buildError(contactAsyncValue.error.toString(), context);
     }
 
     return Scaffold(
@@ -109,5 +111,31 @@ class ContactDetailsScreen extends ConsumerWidget {
 
   Widget _buildLoadingState() {
     return const Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildError(String error, BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Failed to load contact',
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              error,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall!
+                  .copyWith(color: theme.colorScheme.onSurface),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
