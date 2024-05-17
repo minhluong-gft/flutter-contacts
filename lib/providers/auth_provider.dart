@@ -63,4 +63,9 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
     state = const AuthStateAuthenticated();
     _routerListener?.call();
   }
+
+  void logout() {
+    state = const AuthStateUnauthenticated();
+    _routerListener?.call();
+  }
 }

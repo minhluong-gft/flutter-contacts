@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/providers/language_provider.dart';
-import 'package:flutter_contacts/providers/theme_provider.dart';
 import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
 import 'package:flutter_contacts/providers/contacts_provider.dart';
+import 'package:flutter_contacts/widgets/main_draw.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/screens/contacts/contacts_list.dart';
@@ -26,10 +25,7 @@ class ContactsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final isLightTheme = ref.watch(themeNotifierProvider);
-
     final contactsAsyncValue = ref.watch(contactsProvider);
-    Locale currentLocale = Localizations.localeOf(context);
 
     final Widget body;
 
@@ -50,58 +46,7 @@ class ContactsScreen extends ConsumerWidget {
         onPressed: () => _handleAddContact(context, ref),
         child: const Icon(Icons.add),
       ),
-      drawer: Drawer(
-        child: SafeArea(
-          child: ListView(
-            children: [
-              SwitchListTile(
-                title: const Text("lightMode").tr(),
-                value: isLightTheme,
-                onChanged: (value) {
-                  ref.read(themeNotifierProvider.notifier).toggleTheme();
-                },
-                contentPadding: const EdgeInsets.all(16),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "language",
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                    ).tr(),
-                    DropdownButton(
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                      items: const [
-                        DropdownMenuItem(
-                          value: Locale('en', 'US'),
-                          child: Text('English'),
-                        ),
-                        DropdownMenuItem(
-                          value: Locale('km', "KH"),
-                          child: Text('ខ្មែរ'),
-                        ),
-                      ],
-                      value: currentLocale,
-                      onChanged: (value) {
-                        ref
-                            .read(languageNotifierProvider.notifier)
-                            .setLanguage(value!);
-                        context.setLocale(value);
-                      },
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+      drawer: const MainDrawer(),
     );
   }
 

@@ -4,14 +4,10 @@ import 'package:flutter_contacts/providers/language_provider.dart';
 import 'package:flutter_contacts/providers/auth_provider.dart';
 import 'package:flutter_contacts/providers/go_router_provider.dart';
 import 'package:flutter_contacts/providers/theme_provider.dart';
-import 'package:flutter_contacts/screens/contacts_details_screen.dart';
-import 'package:flutter_contacts/screens/login_screen.dart';
 import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_contacts/screens/contacts/contacts_screen.dart';
 import 'package:flutter_contacts/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:go_router/go_router.dart';
 
 Future<Locale> loadSavedLocale() async {
   final preference = await SharedPreferences.getInstance();
@@ -27,12 +23,17 @@ void main() async {
 
   final savedLocale = await loadSavedLocale();
 
-  runApp(EasyLocalization(
-      supportedLocales: const [Locale('en', 'US'), Locale('km', 'KH')],
-      path: 'assets/translations',
-      fallbackLocale: const Locale('en', 'US'),
-      startLocale: savedLocale,
-      child: const ProviderScope(child: MainApp())));
+  runApp(
+    ProviderScope(
+      child: EasyLocalization(
+        supportedLocales: const [Locale('en', 'US'), Locale('km', 'KH')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('en', 'US'),
+        startLocale: savedLocale,
+        child: const MainApp(),
+      ),
+    ),
+  );
 }
 
 class MainApp extends ConsumerWidget {
