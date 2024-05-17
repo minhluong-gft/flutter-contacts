@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/providers/language_provider.dart';
 import 'package:flutter_contacts/providers/theme_provider.dart';
 import 'package:flutter_contacts/screens/contacts/favorite_contact_list.dart';
 import 'package:flutter_contacts/providers/contacts_provider.dart';
@@ -16,7 +18,6 @@ class ContactsScreen extends ConsumerWidget {
       isScrollControlled: true,
       context: context,
       builder: (ctx) => Padding(
-        // padding: const EdgeInsets.all(20),
         padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
         child: const NewContactForm(),
       ),
@@ -25,8 +26,10 @@ class ContactsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final isLightTheme = ref.watch(themProvider);
+    final isLightTheme = ref.watch(themeNotifierProvider);
+
     final contactsAsyncValue = ref.watch(contactsProvider);
+    Locale currentLocale = Localizations.localeOf(context);
 
     final Widget body;
 
@@ -41,7 +44,7 @@ class ContactsScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Contacts')),
+      appBar: AppBar(title: const Text('contacts').tr()),
       body: body,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _handleAddContact(context, ref),
@@ -52,12 +55,48 @@ class ContactsScreen extends ConsumerWidget {
           child: ListView(
             children: [
               SwitchListTile(
-                title: const Text("Light Mode"),
+                title: const Text("lightMode").tr(),
                 value: isLightTheme,
                 onChanged: (value) {
-                  ref.read(themProvider.notifier).state = value;
+                  ref.read(themeNotifierProvider.notifier).toggleTheme();
                 },
                 contentPadding: const EdgeInsets.all(16),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "language",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                    ).tr(),
+                    DropdownButton(
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: Locale('en', 'US'),
+                          child: Text('English'),
+                        ),
+                        DropdownMenuItem(
+                          value: Locale('km', "KH"),
+                          child: Text('ខ្មែរ'),
+                        ),
+                      ],
+                      value: currentLocale,
+                      onChanged: (value) {
+                        ref
+                            .read(languageNotifierProvider.notifier)
+                            .setLanguage(value!);
+                        context.setLocale(value);
+                      },
+                    ),
+                  ],
+                ),
               )
             ],
           ),
