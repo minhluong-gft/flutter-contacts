@@ -3,7 +3,11 @@ import 'package:flutter_contacts/generated/proto/index.pbgrpc.dart' as proto;
 import 'package:flutter_contacts/models/auth_state.dart';
 import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+
+const storage = FlutterSecureStorage();
+const kKeyCredentials = 'credentials';
 
 final authProvider =
     NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
@@ -29,11 +33,11 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
 
   Future<void> checkIfAuthenticated() async {
     state = const AuthStateAuthenticating();
-    await Future.delayed(const Duration(microseconds: 500));
-    const isAuthenticated = 1 != 1;
+    String? credentials = await storage.read(key: kKeyCredentials);
+    final isAuthenticated = credentials != null;
 
     if (isAuthenticated) {
-      state = const AuthStateAuthenticated();
+      state = AuthStateAuthenticated(credentials: credentials);
     } else {
       state = const AuthStateUnauthenticated();
     }
@@ -64,13 +68,16 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
     final response = await ContactsService.instance.client
         .login(proto.LoginRequest(username: username, password: password));
 
+    await storage.write(key: kKeyCredentials, value: response.credentials);
+
     state = AuthStateAuthenticated(
         username: username, credentials: response.credentials);
 
     _routerListener?.call();
   }
 
-  void logout() {
+  void logout() async {
+    storage.delete(key: kKeyCredentials);
     state = const AuthStateUnauthenticated();
     _routerListener?.call();
   }

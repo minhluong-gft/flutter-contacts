@@ -10,7 +10,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     // debugLogDiagnostics: kDebugMode,
-    initialLocation: '/contacts',
+    initialLocation: '/login',
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
