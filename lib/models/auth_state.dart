@@ -18,7 +18,7 @@ final class AuthStateAuthenticated extends AuthState {
   const AuthStateAuthenticated({super.username, super.credentials});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [super.username, super.credentials];
 }
 
 final class AuthStateAuthenticating extends AuthState {

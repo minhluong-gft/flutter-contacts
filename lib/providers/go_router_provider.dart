@@ -1,4 +1,5 @@
 import 'package:flutter_contacts/providers/auth_provider.dart';
+import 'package:flutter_contacts/providers/language_provider.dart';
 import 'package:flutter_contacts/screens/contacts/contacts_screen.dart';
 import 'package:flutter_contacts/screens/contacts_details_screen.dart';
 import 'package:flutter_contacts/screens/login_screen.dart';
@@ -7,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authNotifier = ref.read(authProvider.notifier);
+  ref.watch(languageNotifierProvider);
 
   return GoRouter(
     // debugLogDiagnostics: kDebugMode,
