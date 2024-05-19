@@ -109,6 +109,10 @@ class MainDrawer extends ConsumerWidget {
               ),
             ),
             OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                  side: BorderSide(color: Theme.of(context).colorScheme.error),
+                ),
                 onPressed: () => _handleLogout(context, ref),
                 child: const Text('logout').tr())
           ],

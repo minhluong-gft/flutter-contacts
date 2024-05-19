@@ -56,7 +56,7 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
     if (isAuthenticating) {
       return null;
     }
-    final isAuthenticated = state == const AuthStateAuthenticated();
+    final isAuthenticated = state is AuthStateAuthenticated;
     final isAtLoginPage = goRouterState.matchedLocation == '/login';
 
     if (isAtLoginPage) {
