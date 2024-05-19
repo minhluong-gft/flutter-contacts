@@ -1,6 +1,21 @@
 {
-    "contacts": "Contacts",
-    "favorites": "Favorites",
-    "lightMode": "Light Mode",
-    "language": "Language"
+  "contacts": "Contacts",
+  "favorites": "Favorites",
+  "lightMode": "Light Mode",
+  "language": "Language",
+  "logout": "Logout",
+  "cancel": "Cancel",
+  "title_add_contact": "Add Contact",
+  "fullName": "Full Name",
+  "email": "Email",
+  "btn_add_contact": "Add",
+  "title_login_form": "Login to continue",
+  "username": "Username",
+  "password": "Password",
+  "btn_login": "Login",
+  "validation_username_required": "Please enter your username",
+  "validation_password_required": "Please enter your password",
+  "message_confirm_logout": "Do you want to logout?",
+  "message_add_contact_success": "New contact has been added",
+  "message_login_failed": "Login failed. Please check your username and password"
 }

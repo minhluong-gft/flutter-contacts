@@ -14,26 +14,26 @@ class MainDrawer extends ConsumerWidget {
         builder: (ctx) {
           return AlertDialog(
             title: Text(
-              'Logout',
+              'logout',
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant),
-            ),
+            ).tr(),
             content: Text(
-              'Do  you want to logout',
+              'message_confirm_logout',
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant),
-            ),
+            ).tr(),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Cancel")),
+                  child: const Text("cancel").tr()),
               ElevatedButton(
                   onPressed: () {
                     ref.read(authProvider.notifier).logout();
                   },
-                  child: const Text('Logout'))
+                  child: const Text('logout').tr())
             ],
           );
         });
@@ -84,6 +84,10 @@ class MainDrawer extends ConsumerWidget {
                             DropdownMenuItem(
                               value: Locale('en', 'US'),
                               child: Text('English'),
+                            ),
+                            DropdownMenuItem(
+                              value: Locale('vi', 'VN'),
+                              child: Text('Tiếng Việt'),
                             ),
                             DropdownMenuItem(
                               value: Locale('km', "KH"),

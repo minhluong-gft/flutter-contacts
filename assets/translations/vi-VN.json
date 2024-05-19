@@ -1,0 +1,21 @@
+{
+  "contacts": "Danh Bạ",
+  "favorites": "Yêu Thích",
+  "lightMode": "Chế Độ Sáng",
+  "language": "Ngôn Ngữ",
+  "logout": "Đăng Xuất",
+  "cancel": "Hủy",
+  "title_add_contact": "Liên Hệ Mới",
+  "fullName": "Họ Tên",
+  "email": "Email",
+  "btn_add_contact": "Thêm",
+  "title_login_form": "Hãy đăng nhập để tiếp tục",
+  "username": "Tên Người Dùng",
+  "password": "Mật Khẩu",
+  "btn_login": "Đăng Nhập",
+  "validation_username_required": "Vui lòng nhập tên người dùng",
+  "validation_password_required": "Vui lòng nhập mật khẩu",
+  "message_confirm_logout": "Bạn muốn đăng xuất khỏi ứng dụng không?",
+  "message_add_contact_success": "Liên hệ mới đã được thêm vào danh bạ",
+  "message_login_failed": "Đăng nhập thất bại. Tên người dùng hoặc mật khẩu không đúng"
+}

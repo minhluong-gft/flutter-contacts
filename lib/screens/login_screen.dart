@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/providers/auth_provider.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -31,7 +32,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .catchError((error) {
         setState(() {
           _isRequesting = false;
-          _error = 'Login failed. Please check your username and password.';
+          _error = 'message_login_failed'.tr();
         });
       });
     }
@@ -51,7 +52,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "Login to continue",
+                'title_login_form'.tr(),
                 style: theme.textTheme.titleLarge!
                     .copyWith(color: theme.colorScheme.onSurface),
               ),
@@ -69,11 +70,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 name: 'username',
                 initialValue: 'user',
                 autocorrect: false,
-                decoration: const InputDecoration(
-                  label: Text('Username'),
+                decoration: InputDecoration(
+                  label: const Text('username').tr(),
                 ),
                 validator: FormBuilderValidators.required(
-                  errorText: 'Please enter username',
+                  errorText: 'validation_username_required'.tr(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -82,11 +83,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 initialValue: '123',
                 obscureText: true,
                 autocorrect: false,
-                decoration: const InputDecoration(
-                  label: Text('Password'),
+                decoration: InputDecoration(
+                  label: const Text('password').tr(),
                 ),
                 validator: FormBuilderValidators.required(
-                  errorText: 'Please enter password',
+                  errorText: 'validation_password_required'.tr(),
                 ),
               ),
               const SizedBox(height: 30),
@@ -95,7 +96,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 style: FilledButton.styleFrom(fixedSize: const Size(200, 50)),
                 child: _isRequesting
                     ? const CircularProgressIndicator()
-                    : const Text('Login', style: TextStyle(fontSize: 20)),
+                    : const Text('btn_login', style: TextStyle(fontSize: 20))
+                        .tr(),
               )
             ],
           ),
