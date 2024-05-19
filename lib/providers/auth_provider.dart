@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_contacts/generated/proto/index.pbgrpc.dart' as proto;
 import 'package:flutter_contacts/models/auth_state.dart';
+import 'package:flutter_contacts/repositories/auth_repository.dart';
 import 'package:flutter_contacts/services/contacts_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -13,6 +13,9 @@ final authProvider =
     NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
 
 class AuthNotifier extends Notifier<AuthState> implements Listenable {
+  final _authRepository =
+      AuthRepository(client: ContactsService.instance.client);
+
   VoidCallback? _routerListener;
 
   @override
@@ -65,13 +68,13 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
 
   Future<void> login(
       {required String username, required String password}) async {
-    final response = await ContactsService.instance.client
-        .login(proto.LoginRequest(username: username, password: password));
+    final credentials =
+        await _authRepository.login(username: username, password: password);
 
-    await storage.write(key: kKeyCredentials, value: response.credentials);
+    await storage.write(key: kKeyCredentials, value: credentials);
 
-    state = AuthStateAuthenticated(
-        username: username, credentials: response.credentials);
+    state =
+        AuthStateAuthenticated(username: username, credentials: credentials);
 
     _routerListener?.call();
   }
