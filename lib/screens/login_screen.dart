@@ -68,7 +68,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               const SizedBox(height: 30),
               FormBuilderTextField(
                 name: 'username',
-                initialValue: 'user',
+                initialValue: '',
                 autocorrect: false,
                 decoration: InputDecoration(
                   label: const Text('username').tr(),
@@ -80,7 +80,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               const SizedBox(height: 20),
               FormBuilderTextField(
                 name: 'password',
-                initialValue: '123',
+                initialValue: '',
                 obscureText: true,
                 autocorrect: false,
                 decoration: InputDecoration(
