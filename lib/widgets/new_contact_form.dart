@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/providers/contacts_provider.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -33,8 +34,8 @@ class _NewContactFormState extends ConsumerState<NewContactForm> {
       (value) {
         if (mounted) {
           ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('New contact has been added')));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: const Text('message_add_contact_success').tr()));
           Navigator.of(context).pop();
         }
       },
@@ -48,74 +49,64 @@ class _NewContactFormState extends ConsumerState<NewContactForm> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final inputTextColor = theme.colorScheme.onSurface;
-
     return FormBuilder(
       key: _formKey,
       child: SizedBox(
         height: 500,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-          child: Theme(
-            data: theme.copyWith(
-                textTheme: theme.textTheme.copyWith(
-              bodyLarge: TextStyle(color: inputTextColor),
-            )),
-            child: Column(
-              children: [
-                Text(
-                  "Add Contact",
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 40),
-                FormBuilderTextField(
-                  name: 'fullName',
-                  maxLength: 50,
-                  decoration: const InputDecoration(label: Text('Full Name')),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.maxLength(50),
-                  ]),
-                ),
-                const SizedBox(height: 20),
-                FormBuilderTextField(
-                  name: 'email',
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(label: Text('Email')),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.email(),
-                  ]),
-                ),
-                if (createContactError != null) Text(createContactError!),
-                const Spacer(flex: 1),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    OutlinedButton(
-                      onPressed: isSubmiting
-                          ? null
-                          : () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+          child: Column(
+            children: [
+              Text(
+                'title_add_contact'.tr(),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(width: 16),
-                    FilledButton(
-                      onPressed: isSubmiting ? null : _handleSubmit,
-                      child: isSubmiting
-                          ? const SizedBox(
-                              height: 16,
-                              width: 16,
-                              child: CircularProgressIndicator())
-                          : const Text('Add Contact'),
-                    ),
-                  ],
-                )
-              ],
-            ),
+              ),
+              const SizedBox(height: 40),
+              FormBuilderTextField(
+                name: 'fullName',
+                maxLength: 50,
+                decoration: InputDecoration(label: const Text('fullName').tr()),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.maxLength(50),
+                ]),
+              ),
+              const SizedBox(height: 20),
+              FormBuilderTextField(
+                name: 'email',
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(label: const Text('email').tr()),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.email(),
+                ]),
+              ),
+              if (createContactError != null) Text(createContactError!),
+              const Spacer(flex: 1),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  OutlinedButton(
+                    onPressed:
+                        isSubmiting ? null : () => Navigator.of(context).pop(),
+                    child: const Text('cancel').tr(),
+                  ),
+                  const SizedBox(width: 16),
+                  FilledButton(
+                    onPressed: isSubmiting ? null : _handleSubmit,
+                    child: isSubmiting
+                        ? const SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator())
+                        : const Text('btn_add_contact').tr(),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),

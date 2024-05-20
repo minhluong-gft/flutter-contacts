@@ -1,6 +1,5 @@
-import 'package:flutter_contacts/generated/proto/index.pb.dart' as proto;
 import 'package:flutter_contacts/providers/contact_provider.dart';
-import 'package:flutter_contacts/services/contacts_service.dart';
+import 'package:flutter_contacts/repositories/contacts_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_contacts/models/contact.dart';
 
@@ -14,16 +13,11 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
     required String email,
     required String? avatar,
   }) async {
-    final client = ContactsService.instance.client;
-    final protoContact = await client.createContact(
-      proto.CreateContactRequest(
-        fullName: fullName,
-        email: email,
-        avatar: avatar,
-      ),
-    );
-
-    final newContact = Contact.fromProtoContact(protoContact);
+    final newContact = await ref.read(contactsRepositoryProvider).addContact(
+          fullName: fullName,
+          email: email,
+          avatar: avatar,
+        );
 
     final previousState = await future;
 
@@ -31,8 +25,7 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
   }
 
   Future<void> deleteContact(String contactId) async {
-    final client = ContactsService.instance.client;
-    await client.deleteContact(proto.Id(id: contactId));
+    await ref.read(contactsRepositoryProvider).deleteContact(contactId);
 
     final previousState = await future;
     state = AsyncData(
@@ -40,16 +33,16 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
   }
 
   Future<void> setContactFavorite(String contactId, bool isFavorite) async {
-    final client = ContactsService.instance.client;
-    await client.setContactFavorite(
-        proto.SetContactFavoriteRequest(id: contactId, isFavorite: isFavorite));
+    await ref
+        .read(contactsRepositoryProvider)
+        .setContactFavorite(contactId, isFavorite);
 
     final previousState = await future;
     state = AsyncData(previousState.map((element) {
       if (element.id != contactId) {
         return element;
       }
-      return element.copyWith(isFavoriteParameter: isFavorite);
+      return element.copyWith(isFavorite: isFavorite);
     }).toList());
 
     ref.invalidate(contactProvider(contactId));
@@ -57,9 +50,7 @@ class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
 
   @override
   Future<List<Contact>> build() async {
-    final response =
-        await ContactsService.instance.client.getContacts(proto.Void());
-    final contacts = response.contacts.map(Contact.fromProtoContact).toList();
+    final contacts = await ref.read(contactsRepositoryProvider).getContacts();
     return contacts;
   }
 }

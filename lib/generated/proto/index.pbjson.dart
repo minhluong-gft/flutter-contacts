@@ -118,3 +118,29 @@ final $typed_data.Uint8List setContactFavoriteRequestDescriptor = $convert.base6
     'ChlTZXRDb250YWN0RmF2b3JpdGVSZXF1ZXN0Eg4KAmlkGAEgASgJUgJpZBIeCgppc0Zhdm9yaX'
     'RlGAIgASgIUgppc0Zhdm9yaXRl');
 
+@$core.Deprecated('Use loginRequestDescriptor instead')
+const LoginRequest$json = {
+  '1': 'LoginRequest',
+  '2': [
+    {'1': 'username', '3': 1, '4': 1, '5': 9, '10': 'username'},
+    {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
+  ],
+};
+
+/// Descriptor for `LoginRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List loginRequestDescriptor = $convert.base64Decode(
+    'CgxMb2dpblJlcXVlc3QSGgoIdXNlcm5hbWUYASABKAlSCHVzZXJuYW1lEhoKCHBhc3N3b3JkGA'
+    'IgASgJUghwYXNzd29yZA==');
+
+@$core.Deprecated('Use loginResponseDescriptor instead')
+const LoginResponse$json = {
+  '1': 'LoginResponse',
+  '2': [
+    {'1': 'credentials', '3': 1, '4': 1, '5': 9, '10': 'credentials'},
+  ],
+};
+
+/// Descriptor for `LoginResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List loginResponseDescriptor = $convert.base64Decode(
+    'Cg1Mb2dpblJlc3BvbnNlEiAKC2NyZWRlbnRpYWxzGAEgASgJUgtjcmVkZW50aWFscw==');
+

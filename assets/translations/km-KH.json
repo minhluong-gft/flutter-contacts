@@ -1,6 +1,21 @@
 {
-    "contacts": "ទំនាក់ទំនង",
-    "favorites": "ចំណូលចិត្ត",
-    "lightMode": "របៀបពន្លឺ",
-    "language": "ភាសា"
+  "contacts": "ទំនាក់ទំនង",
+  "favorites": "ចំណូលចិត្ត",
+  "lightMode": "របៀបពន្លឺ",
+  "language": "ភាសា",
+  "logout": "ចាកចេញ",
+  "cancel": "បោះបង់",
+  "title_add_contact": "បន្ថែមទំនាក់ទំនង",
+  "fullName": "ឈ្មោះពេញ",
+  "email": "អ៊ីមែល",
+  "btn_add_contact": "បន្ថែម",
+  "title_login_form": "ចូលដើម្បីបន្ត",
+  "username": "ឈ្មោះអ្នកប្រើ",
+  "password": "ពាក្យសម្ងាត់",
+  "btn_login": "ចូល",
+  "validation_username_required": "សូមបញ្ចូលឈ្មោះអ្នកប្រើរបស់អ្នក",
+  "validation_password_required": "សូមបញ្ចូលពាក្យសម្ងាត់របស់អ្នក",
+  "message_confirm_logout": "តើអ្នកចង់ចាកចេញមែនទេ?",
+  "message_add_contact_success": "ទំនាក់ទំនងថ្មីត្រូវបានបន្ថែម",
+  "message_login_failed": "ការចូលបរាជ័យ។ សូមពិនិត្យឈ្មោះអ្នកប្រើនិងពាក្យសម្ងាត់"
 }

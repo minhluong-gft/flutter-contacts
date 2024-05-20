@@ -1,3 +1,4 @@
+// coverage:ignore-file
 //
 //  Generated code. Do not modify.
 //  source: proto/index.proto
@@ -33,47 +34,65 @@ class ContactsClient extends $grpc.Client {
       '/contactsproto.Contacts/GetContact',
       ($0.Id value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Contact.fromBuffer(value));
-  static final _$createContact = $grpc.ClientMethod<$0.CreateContactRequest, $0.Contact>(
-      '/contactsproto.Contacts/CreateContact',
-      ($0.CreateContactRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Contact.fromBuffer(value));
+  static final _$createContact =
+      $grpc.ClientMethod<$0.CreateContactRequest, $0.Contact>(
+          '/contactsproto.Contacts/CreateContact',
+          ($0.CreateContactRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Contact.fromBuffer(value));
   static final _$deleteContact = $grpc.ClientMethod<$0.Id, $0.Void>(
       '/contactsproto.Contacts/DeleteContact',
       ($0.Id value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Void.fromBuffer(value));
-  static final _$setContactFavorite = $grpc.ClientMethod<$0.SetContactFavoriteRequest, $0.Contact>(
-      '/contactsproto.Contacts/setContactFavorite',
-      ($0.SetContactFavoriteRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Contact.fromBuffer(value));
+  static final _$setContactFavorite =
+      $grpc.ClientMethod<$0.SetContactFavoriteRequest, $0.Contact>(
+          '/contactsproto.Contacts/setContactFavorite',
+          ($0.SetContactFavoriteRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Contact.fromBuffer(value));
+  static final _$login = $grpc.ClientMethod<$0.LoginRequest, $0.LoginResponse>(
+      '/contactsproto.Contacts/Login',
+      ($0.LoginRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.LoginResponse.fromBuffer(value));
 
   ContactsClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
-      : super(channel, options: options,
-        interceptors: interceptors);
+      : super(channel, options: options, interceptors: interceptors);
 
-  $grpc.ResponseFuture<$0.HelloReply> sayHello($0.HelloRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$0.HelloReply> sayHello($0.HelloRequest request,
+      {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$sayHello, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.ContactsResponse> getContacts($0.Void request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$0.ContactsResponse> getContacts($0.Void request,
+      {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getContacts, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.Contact> getContact($0.Id request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$0.Contact> getContact($0.Id request,
+      {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getContact, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.Contact> createContact($0.CreateContactRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$0.Contact> createContact(
+      $0.CreateContactRequest request,
+      {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createContact, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.Void> deleteContact($0.Id request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$0.Void> deleteContact($0.Id request,
+      {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteContact, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.Contact> setContactFavorite($0.SetContactFavoriteRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$0.Contact> setContactFavorite(
+      $0.SetContactFavoriteRequest request,
+      {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$setContactFavorite, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.LoginResponse> login($0.LoginRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$login, request, options: options);
   }
 }
 
@@ -108,7 +127,8 @@ abstract class ContactsServiceBase extends $grpc.Service {
         createContact_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.CreateContactRequest.fromBuffer(value),
+        ($core.List<$core.int> value) =>
+            $0.CreateContactRequest.fromBuffer(value),
         ($0.Contact value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Id, $0.Void>(
         'DeleteContact',
@@ -122,38 +142,63 @@ abstract class ContactsServiceBase extends $grpc.Service {
         setContactFavorite_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.SetContactFavoriteRequest.fromBuffer(value),
+        ($core.List<$core.int> value) =>
+            $0.SetContactFavoriteRequest.fromBuffer(value),
         ($0.Contact value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.LoginRequest, $0.LoginResponse>(
+        'Login',
+        login_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.LoginRequest.fromBuffer(value),
+        ($0.LoginResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.HelloReply> sayHello_Pre($grpc.ServiceCall call, $async.Future<$0.HelloRequest> request) async {
+  $async.Future<$0.HelloReply> sayHello_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.HelloRequest> request) async {
     return sayHello(call, await request);
   }
 
-  $async.Future<$0.ContactsResponse> getContacts_Pre($grpc.ServiceCall call, $async.Future<$0.Void> request) async {
+  $async.Future<$0.ContactsResponse> getContacts_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Void> request) async {
     return getContacts(call, await request);
   }
 
-  $async.Future<$0.Contact> getContact_Pre($grpc.ServiceCall call, $async.Future<$0.Id> request) async {
+  $async.Future<$0.Contact> getContact_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Id> request) async {
     return getContact(call, await request);
   }
 
-  $async.Future<$0.Contact> createContact_Pre($grpc.ServiceCall call, $async.Future<$0.CreateContactRequest> request) async {
+  $async.Future<$0.Contact> createContact_Pre($grpc.ServiceCall call,
+      $async.Future<$0.CreateContactRequest> request) async {
     return createContact(call, await request);
   }
 
-  $async.Future<$0.Void> deleteContact_Pre($grpc.ServiceCall call, $async.Future<$0.Id> request) async {
+  $async.Future<$0.Void> deleteContact_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Id> request) async {
     return deleteContact(call, await request);
   }
 
-  $async.Future<$0.Contact> setContactFavorite_Pre($grpc.ServiceCall call, $async.Future<$0.SetContactFavoriteRequest> request) async {
+  $async.Future<$0.Contact> setContactFavorite_Pre($grpc.ServiceCall call,
+      $async.Future<$0.SetContactFavoriteRequest> request) async {
     return setContactFavorite(call, await request);
   }
 
-  $async.Future<$0.HelloReply> sayHello($grpc.ServiceCall call, $0.HelloRequest request);
-  $async.Future<$0.ContactsResponse> getContacts($grpc.ServiceCall call, $0.Void request);
+  $async.Future<$0.LoginResponse> login_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.LoginRequest> request) async {
+    return login(call, await request);
+  }
+
+  $async.Future<$0.HelloReply> sayHello(
+      $grpc.ServiceCall call, $0.HelloRequest request);
+  $async.Future<$0.ContactsResponse> getContacts(
+      $grpc.ServiceCall call, $0.Void request);
   $async.Future<$0.Contact> getContact($grpc.ServiceCall call, $0.Id request);
-  $async.Future<$0.Contact> createContact($grpc.ServiceCall call, $0.CreateContactRequest request);
+  $async.Future<$0.Contact> createContact(
+      $grpc.ServiceCall call, $0.CreateContactRequest request);
   $async.Future<$0.Void> deleteContact($grpc.ServiceCall call, $0.Id request);
-  $async.Future<$0.Contact> setContactFavorite($grpc.ServiceCall call, $0.SetContactFavoriteRequest request);
+  $async.Future<$0.Contact> setContactFavorite(
+      $grpc.ServiceCall call, $0.SetContactFavoriteRequest request);
+  $async.Future<$0.LoginResponse> login(
+      $grpc.ServiceCall call, $0.LoginRequest request);
 }

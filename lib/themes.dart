@@ -12,7 +12,9 @@ final kDarkColorSchema = ColorScheme.fromSeed(
   brightness: Brightness.dark,
 );
 final kDarkTheme = ThemeData.dark().copyWith(
-  textTheme: GoogleFonts.inderTextTheme(),
+  textTheme: GoogleFonts.inderTextTheme().copyWith(
+    bodyLarge: TextStyle(color: kDarkColorSchema.onSurface),
+  ),
   colorScheme: kDarkColorSchema,
   inputDecorationTheme: const InputDecorationTheme().copyWith(
     floatingLabelBehavior: FloatingLabelBehavior.always,
