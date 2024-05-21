@@ -95,13 +95,3 @@ class ContactsList extends ConsumerWidget {
     );
   }
 }
-
-Color stringToHslColor(String str, double s, double l) {
-  int hash = 0;
-  for (int i = 0; i < str.length; i++) {
-    hash = str.codeUnitAt(i) + ((hash << 5) - hash);
-  }
-
-  int h = hash % 360;
-  return HSLColor.fromAHSL(1.0, h.toDouble(), s, l).toColor();
-}
