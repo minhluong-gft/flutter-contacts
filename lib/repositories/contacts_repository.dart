@@ -2,8 +2,10 @@ import 'package:flutter_contacts/generated/proto/index.pbgrpc.dart' as grpc;
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/providers/auth_provider.dart';
 import 'package:flutter_contacts/services/contacts_service.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grpc/grpc.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'contacts_repository.g.dart';
 
 class ContactsRepository {
   final String? _credentials;
@@ -69,12 +71,11 @@ class ContactsRepository {
   }
 }
 
-final contactsRepositoryProvider = Provider<ContactsRepository>(
-  (ref) {
-    final credentials = ref.watch(authProvider).credentials;
-    return ContactsRepository(
-      client: ContactsService.instance.client,
-      credentials: credentials,
-    );
-  },
-);
+@riverpod
+ContactsRepository contactsRepository(ContactsRepositoryRef ref) {
+  final credentials = ref.watch(authProvider).credentials;
+  return ContactsRepository(
+    client: ContactsService.instance.client,
+    credentials: credentials,
+  );
+}

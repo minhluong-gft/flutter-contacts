@@ -51,7 +51,8 @@ class ContactsScreen extends ConsumerWidget {
   }
 
   Widget _buildLoadingState() {
-    return const Center(child: CircularProgressIndicator());
+    return const Center(
+        key: Key('loading'), child: CircularProgressIndicator());
   }
 
   Widget _buildError(String error, BuildContext context) {
