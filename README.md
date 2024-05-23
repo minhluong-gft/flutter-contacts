@@ -38,6 +38,12 @@ A Contacts Management app written in Flutter
   flutter run
   ```
 
+- Account to login to the app:
+
+  Username: **user**
+
+  Password: **123**
+
 ### Testing
 
 - Generate testing snapshots
