@@ -38,7 +38,7 @@ void main() {
       expect(find.byKey(const Key('2')), findsOneWidget);
 
       expect(find.byKey(const Key('icon-favorite-2')), findsNothing);
-      expect(find.byKey(const Key('icon-favorite-2')), findsNothing);
+      expect(find.byKey(const Key('icon-delete-2')), findsNothing);
 
       await tester.drag(find.byKey(const Key('2')), const Offset(-500, 0));
       await tester.pumpAndSettle();

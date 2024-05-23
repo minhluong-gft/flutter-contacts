@@ -92,10 +92,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
               const SizedBox(height: 30),
               FilledButton(
+                key: const Key('btn_login'),
                 onPressed: _isRequesting ? null : _handleSubmit,
                 style: FilledButton.styleFrom(fixedSize: const Size(200, 50)),
                 child: _isRequesting
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator(key: Key('loader'))
                     : const Text('btn_login', style: TextStyle(fontSize: 20))
                         .tr(),
               )
