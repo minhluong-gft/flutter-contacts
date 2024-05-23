@@ -26,18 +26,12 @@ class ContactsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final contactsAsyncValue = ref.watch(contactsProvider);
-
-    final Widget body;
-
-    if (contactsAsyncValue.value != null && contactsAsyncValue.value!.isEmpty) {
-      body = _buildEmptyState(context);
-    } else if (contactsAsyncValue.valueOrNull != null) {
-      body = _buildList(contactsAsyncValue.value!, ref);
-    } else if (contactsAsyncValue.error != null) {
-      body = _buildError(contactsAsyncValue.error.toString(), context);
-    } else {
-      body = _buildLoadingState();
-    }
+    final body = contactsAsyncValue.when(
+        data: (contacts) => contacts.isEmpty
+            ? _buildEmptyState(context)
+            : _buildList(contacts, ref),
+        error: (error, _) => _buildError(error.toString(), context),
+        loading: () => _buildLoadingState());
 
     return Scaffold(
       appBar: AppBar(title: const Text('contacts').tr()),
@@ -51,7 +45,8 @@ class ContactsScreen extends ConsumerWidget {
   }
 
   Widget _buildLoadingState() {
-    return const Center(child: CircularProgressIndicator());
+    return const Center(
+        key: Key('loading'), child: CircularProgressIndicator());
   }
 
   Widget _buildError(String error, BuildContext context) {

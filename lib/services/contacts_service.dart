@@ -19,7 +19,7 @@ class ContactsService {
   }
 
   _createChannel() {
-    const host = "192.168.2.24";
+    const host = "10.234.60.241";
     final channel = ClientChannel(
       host,
       port: 50051,

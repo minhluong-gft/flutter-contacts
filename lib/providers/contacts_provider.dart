@@ -1,13 +1,12 @@
+import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/providers/contact_provider.dart';
 import 'package:flutter_contacts/repositories/contacts_repository.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_contacts/models/contact.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final contactsProvider =
-    AsyncNotifierProvider.autoDispose<ContactsNotifier, List<Contact>>(
-        ContactsNotifier.new);
+part 'contacts_provider.g.dart';
 
-class ContactsNotifier extends AutoDisposeAsyncNotifier<List<Contact>> {
+@riverpod
+class Contacts extends _$Contacts {
   Future<void> addContact({
     required String fullName,
     required String email,

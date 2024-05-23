@@ -1,11 +1,12 @@
 import 'package:flutter_contacts/models/contact.dart';
 import 'package:flutter_contacts/repositories/contacts_repository.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final contactProvider = FutureProvider.autoDispose.family<Contact, String>(
-  (ref, contactId) async {
-    final contactsRepository = ref.watch(contactsRepositoryProvider);
-    final contact = await contactsRepository.getContact(contactId);
-    return contact;
-  },
-);
+part 'contact_provider.g.dart';
+
+@riverpod
+Future<Contact> contact(ContactRef ref, String contactId) async {
+  final contactsRepository = ref.watch(contactsRepositoryProvider);
+  final contact = await contactsRepository.getContact(contactId);
+  return contact;
+}

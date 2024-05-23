@@ -1,4 +1,8 @@
 import 'package:flutter_contacts/generated/proto/index.pbgrpc.dart' as grpc;
+import 'package:flutter_contacts/services/contacts_service.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'auth_repository.g.dart';
 
 class AuthRepository {
   final grpc.ContactsClient _client;
@@ -13,4 +17,11 @@ class AuthRepository {
     );
     return response.credentials;
   }
+}
+
+@riverpod
+AuthRepository authRepository(AuthRepositoryRef ref) {
+  return AuthRepository(
+    client: ContactsService.instance.client,
+  );
 }

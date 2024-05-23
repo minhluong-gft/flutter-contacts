@@ -1,21 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_contacts/models/auth_state.dart';
 import 'package:flutter_contacts/repositories/auth_repository.dart';
-import 'package:flutter_contacts/services/contacts_service.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:go_router/go_router.dart';
 
-const storage = FlutterSecureStorage();
+import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'auth_provider.g.dart';
+
 const kKeyCredentials = 'credentials';
 
-final authProvider =
-    NotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
-
-class AuthNotifier extends Notifier<AuthState> implements Listenable {
-  final _authRepository =
-      AuthRepository(client: ContactsService.instance.client);
-
+@Riverpod(keepAlive: true)
+class Auth extends _$Auth implements Listenable {
   VoidCallback? _routerListener;
 
   @override
@@ -36,7 +32,9 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
 
   Future<void> checkIfAuthenticated() async {
     state = const AuthStateAuthenticating();
-    String? credentials = await storage.read(key: kKeyCredentials);
+    String? credentials =
+        await ref.read(secureStorageProvider).read(key: kKeyCredentials);
+
     final isAuthenticated = credentials != null;
 
     if (isAuthenticated) {
@@ -68,10 +66,13 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
 
   Future<void> login(
       {required String username, required String password}) async {
-    final credentials =
-        await _authRepository.login(username: username, password: password);
+    final credentials = await ref
+        .read(authRepositoryProvider)
+        .login(username: username, password: password);
 
-    await storage.write(key: kKeyCredentials, value: credentials);
+    await ref
+        .read(secureStorageProvider)
+        .write(key: kKeyCredentials, value: credentials);
 
     state =
         AuthStateAuthenticated(username: username, credentials: credentials);
@@ -80,8 +81,13 @@ class AuthNotifier extends Notifier<AuthState> implements Listenable {
   }
 
   void logout() async {
-    storage.delete(key: kKeyCredentials);
+    ref.read(secureStorageProvider).delete(key: kKeyCredentials);
     state = const AuthStateUnauthenticated();
     _routerListener?.call();
   }
+}
+
+@riverpod
+FlutterSecureStorage secureStorage(SecureStorageRef ref) {
+  return const FlutterSecureStorage();
 }

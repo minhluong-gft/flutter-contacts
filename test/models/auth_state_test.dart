@@ -5,6 +5,7 @@ void main() {
   group('AuthState', () {
     test('AuthStateInitial supports value comparison', () {
       expect(const AuthStateInitial(), const AuthStateInitial());
+      expect(const AuthStateInitial().props, const <Object?>[]);
     });
 
     test('AuthStateAuthenticated supports value comparison', () {
@@ -21,11 +22,13 @@ void main() {
 
     test('AuthStateAuthenticating supports value comparison', () {
       expect(const AuthStateAuthenticating(), const AuthStateAuthenticating());
+      expect(const AuthStateAuthenticating().props, const <Object?>[]);
     });
 
     test('AuthStateUnauthenticated supports value comparison', () {
       expect(
           const AuthStateUnauthenticated(), const AuthStateUnauthenticated());
+      expect(const AuthStateUnauthenticated().props, const <Object?>[]);
     });
 
     test('AuthStateAuthenticated correctly assigns properties', () {
